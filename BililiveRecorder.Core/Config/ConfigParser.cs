@@ -116,8 +116,17 @@ namespace BililiveRecorder.Core.Config
                 var filepath = Path.Combine(directory, CONFIG_FILE_NAME);
 
                 if (config.ConfigPathOverride is not null)
-                    filepath = config.ConfigPathOverride;
-
+                {
+                    if (config.ConfigPathOverride.EndsWith(".json"))
+                        filepath = config.ConfigPathOverride;
+                    else
+                    {
+                        logger.Information("Redirect overrided config path to {ConfigOverride}",Path.Combine(config.ConfigPathOverride,CONFIG_FILE_NAME));
+                        config.ConfigPathOverride = Path.Combine(config.ConfigPathOverride,CONFIG_FILE_NAME);
+                        filepath = config.ConfigPathOverride;
+                    }
+                }
+                
                 if (json is not null)
                     WriteAllTextWithBackup(filepath, json);
 
