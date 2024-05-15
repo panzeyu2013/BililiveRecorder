@@ -117,14 +117,16 @@ namespace BililiveRecorder.Core.Config
 
                 if (config.ConfigPathOverride is not null)
                 {
-                    if (config.ConfigPathOverride.EndsWith(".json"))
+                    if (File.Exists(config.ConfigPathOverride))
                         filepath = config.ConfigPathOverride;
-                    else
+                    else if (Directory.Exists(config.ConfigPathOverride))
                     {
                         logger.Information("Redirect overrided config path to {ConfigOverride}",Path.Combine(config.ConfigPathOverride,CONFIG_FILE_NAME));
                         config.ConfigPathOverride = Path.Combine(config.ConfigPathOverride,CONFIG_FILE_NAME);
                         filepath = config.ConfigPathOverride;
                     }
+                    else
+                        logger.Error("Error config-override Path");
                 }
                 
                 if (json is not null)
