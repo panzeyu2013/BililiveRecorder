@@ -130,8 +130,16 @@ namespace BililiveRecorder.Cli
 
             if (args.ConfigOverride is not null)
             {
-                logger.Information("Using config from {ConfigOverride}", args.ConfigOverride);
-                config = ConfigParser.LoadFromFile(args.ConfigOverride);
+                if (Directory.Exists(args.ConfigOverride))
+                {
+                    logger.Information("Using config from directory {ConfigOverride}", args.ConfigOverride);
+                    config = ConfigParser.LoadFromDirectory(path);
+                }  
+                else
+                {
+                    logger.Information("Using config from {ConfigOverride}", args.ConfigOverride);
+                    config = ConfigParser.LoadFromFile(args.ConfigOverride);
+                }
             }
             else
             {
